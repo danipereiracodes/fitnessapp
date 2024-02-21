@@ -18,13 +18,7 @@ const Modal: React.FC<ModalProps> = ({ showModal }) => {
     number | string | null
   >(0);
   const [isLoading, setisLoading] = useState(false);
-
-  console.log({
-    selectedValue,
-    inputValueAge,
-    inputValueHeight,
-    inputValueWeight,
-  });
+  const [noGender, setNoGender] = useState(false);
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -64,10 +58,13 @@ const Modal: React.FC<ModalProps> = ({ showModal }) => {
 
   const handleSelect = (selectedOption: string | null) => {
     setSelectedValue(selectedOption);
+    if (selectedOption !== 'none') {
+      return setNoGender(false);
+    }
+    return setNoGender(true);
   };
 
   const handleLastInputBlur = () => {
-    console.log('checking all filled');
     if (
       selectedValue !== null &&
       typeof inputValueAge === 'number' &&
@@ -108,9 +105,13 @@ const Modal: React.FC<ModalProps> = ({ showModal }) => {
               />
               <CustomSelect
                 label={'Select your gender'}
-                options={['Female', 'Male', 'Non-binary']}
+                options={['Female', 'Male', 'Non-binary', 'none']}
                 onSelect={handleSelect}
               />
+              <span className='text-[#f95959]'>
+                {noGender &&
+                  '* With this option the information could not be 100% accurate'}
+              </span>
 
               <CustomNumberInput
                 label='What is your weight in kg?'
