@@ -1,11 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-
-import tailwindcss from 'tailwindcss';
-
 export default {
-  content: [['./src/**/*.{html,tsx}']],
+  content: ['./src/**/*.{html,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        codeMono: ['Kode Mono', 'monospace'],
+        roboto: ['robot', 'sans-serif'],
+        pacifico: ['pacifico', 'cursive'],
+      },
+    },
+    backgroundImage: {
+      'hero-pattern': "url('/image/fitness_background.avif')",
+    },
   },
-  plugins: [tailwindcss],
+  plugins: [],
 };
