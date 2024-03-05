@@ -20,7 +20,6 @@ const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
 
     timeout = setTimeout(() => {
       onHandleAllInputs();
-      console.log(value);
     }, 2000);
   };
 

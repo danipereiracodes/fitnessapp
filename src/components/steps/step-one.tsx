@@ -133,6 +133,7 @@ const StepOne: React.FC<StepOneProps> = ({
               label={'Select your gender'}
               options={['Female', 'Male', 'Non-binary', 'none']}
               onSelect={handleSelect}
+              onHandleAllInputs={handleAllInputs}
             />
             <span className='text-[#f95959]'>
               {noGender &&

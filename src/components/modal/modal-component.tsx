@@ -8,10 +8,11 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ showModal }) => {
   const [isLoading, setisLoading] = useState(false);
-  const [isAllInputFilled, setIsAllInputFilled] = useState<boolean>(false);
+  const [isAllInputStepOneFilled, setIsAllInputStepOneFilled] =
+    useState<boolean>(false);
 
   if (!showModal) return;
-  if (isAllInputFilled) {
+  if (isAllInputStepOneFilled) {
     if (isLoading) {
       return <div className='loader'></div>;
     }
@@ -21,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({ showModal }) => {
     <StepOne
       title="Let's start with some information about you"
       isLoading={isLoading}
-      onIsAllInputFilled={setIsAllInputFilled}
+      onIsAllInputFilled={setIsAllInputStepOneFilled}
       onLoading={setisLoading}
     />
   );
