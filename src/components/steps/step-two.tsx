@@ -17,13 +17,20 @@ const StepTwo: React.FC<StepTwoProps> = ({ title }) => {
             onSelect={() => {}}
             onHandleAllInputs={() => {}}
           />
-          <CustomSelect
-            label={'Any Alergies?'}
-            options={['Gluten', 'Lactose']}
-            onSelect={() => {}}
-            onHandleAllInputs={() => {}}
-          />
-          <input type='checkbox'></input>
+          {/* TODO: CUSTOM CHECKBOX */}
+          <fieldset>
+            <legend>Do you have alergies?</legend>
+
+            <div>
+              <input type='checkbox' id='gluten' name='gluten' />
+              <label htmlFor='gluten'>Gluten</label>
+            </div>
+
+            <div>
+              <input type='checkbox' id='lactose' name='lactose' />
+              <label htmlFor='lactose'>Lactose</label>
+            </div>
+          </fieldset>
         </div>
       </div>
     </section>
