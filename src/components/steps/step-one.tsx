@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomNumberInput from '../custom-input/custom-imput';
 import CustomSelect from '../custom-select/custom-select-component';
-import { handleLastInputBlur } from '../../helpers/handle-last-input';
-import Button from '../button/Button';
 
 interface StepOneProps {
   isLoading: boolean;
@@ -72,7 +70,34 @@ const StepOne: React.FC<StepOneProps> = ({
     return setNoGender(true);
   };
 
-  const handleClick = () => {
+  const handleLastInputBlur = (
+    selectedValue: string | null,
+    inputAge: number | string | null,
+    inputWeight: number | string | null,
+    inputHeight: number | string | null,
+    loading: (arg0: boolean) => void,
+    allFilled: (arg0: boolean) => void
+  ) => {
+    if (
+      selectedValue !== null &&
+      typeof inputAge === 'number' &&
+      inputAge > 0 &&
+      typeof inputWeight === 'number' &&
+      inputWeight > 0 &&
+      typeof inputHeight === 'number' &&
+      inputHeight > 0
+    ) {
+      loading(true);
+      setTimeout(() => {
+        loading(false);
+        allFilled(true);
+      }, 2000);
+    } else {
+      allFilled(false);
+    }
+  };
+
+  useEffect(() => {
     handleLastInputBlur(
       selectedValue,
       inputValueAge,
@@ -81,10 +106,11 @@ const StepOne: React.FC<StepOneProps> = ({
       onLoading,
       onIsAllInputFilled
     );
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedValue, inputValueAge, inputValueHeight, inputValueWeight]);
 
   return (
-    <section className='flex flex-col justify-center items-center p-4 absolute inset-0 z-20 bg-[#e3e3e3] w-[75%] h-[75vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+    <section className='flex flex-col justify-evenly items-center p-4 absolute inset-0 z-20 bg-[#e3e3e3] w-[75%] h-[75vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
       {isLoading ? (
         <div className='loader'></div>
       ) : (
@@ -119,7 +145,6 @@ const StepOne: React.FC<StepOneProps> = ({
               value={inputValueHeight}
               onChange={handleHeightChange}
             />
-            <Button onClick={handleClick} text='Next Step' />
           </div>
         </>
       )}
