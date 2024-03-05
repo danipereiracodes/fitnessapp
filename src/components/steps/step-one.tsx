@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CustomNumberInput from '../custom-input/custom-imput';
 import CustomSelect from '../custom-select/custom-select-component';
 
 interface StepOneProps {
   isLoading: boolean;
   title: string;
+
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
   onLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -12,6 +13,7 @@ interface StepOneProps {
 const StepOne: React.FC<StepOneProps> = ({
   isLoading,
   title,
+
   onIsAllInputFilled,
   onLoading,
 }) => {
@@ -97,7 +99,7 @@ const StepOne: React.FC<StepOneProps> = ({
     }
   };
 
-  useEffect(() => {
+  const handleAllInputs = () => {
     handleLastInputBlur(
       selectedValue,
       inputValueAge,
@@ -106,8 +108,9 @@ const StepOne: React.FC<StepOneProps> = ({
       onLoading,
       onIsAllInputFilled
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedValue, inputValueAge, inputValueHeight, inputValueWeight]);
+  };
+
+  /* const handleClick = () => {}; */
 
   return (
     <section className='flex flex-col justify-evenly items-center p-4 absolute inset-0 z-20 bg-[#e3e3e3] w-[75%] h-[75vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
@@ -124,6 +127,7 @@ const StepOne: React.FC<StepOneProps> = ({
               label="What's your age?"
               value={inputValueAge}
               onChange={handleAgeChange}
+              onHandleAllInputs={handleAllInputs}
             />
             <CustomSelect
               label={'Select your gender'}
@@ -139,11 +143,13 @@ const StepOne: React.FC<StepOneProps> = ({
               label='What is your weight in kg?'
               value={inputValueWeight}
               onChange={handleWeightChange}
+              onHandleAllInputs={handleAllInputs}
             />
             <CustomNumberInput
               label='What is your height in cm?'
               value={inputValueHeight}
               onChange={handleHeightChange}
+              onHandleAllInputs={handleAllInputs}
             />
           </div>
         </>
