@@ -110,6 +110,11 @@ const StepOne: React.FC<StepOneProps> = ({
     );
   };
 
+  //TODO DELETE
+  const fillAll = () => {
+    onIsAllInputFilled(true);
+  };
+
   /* const handleClick = () => {}; */
 
   return (
@@ -153,6 +158,7 @@ const StepOne: React.FC<StepOneProps> = ({
               onHandleAllInputs={handleAllInputs}
             />
           </div>
+          <button onClick={fillAll}>FILL ALL</button>
         </>
       )}
     </section>

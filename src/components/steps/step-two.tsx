@@ -1,9 +1,35 @@
 import React from 'react';
 import CustomSelect from '../custom-select/custom-select-component';
+import CustomCheckbox from '../custom-checkbox/custom-checkbox';
 
 interface StepTwoProps {
   title: string;
 }
+
+//TODO EXTRACT DATA
+const foodAllergies = [
+  { allergie: 'gluten' },
+  { allergie: 'lactose' },
+  { allergie: 'nuts' },
+  { allergie: 'shellfish' },
+  { allergie: 'soy' },
+  { allergie: 'eggs' },
+  { allergie: 'fish' },
+  { allergie: 'milk' },
+  { allergie: 'wheat' },
+  { allergie: 'peanuts' },
+  { allergie: 'tree nuts' },
+  { allergie: 'sesame seeds' },
+  { allergie: 'sulfites' },
+  { allergie: 'mustard' },
+  { allergie: 'celery' },
+  { allergie: 'mollusks' },
+  { allergie: 'lupin' },
+  { allergie: 'corn' },
+  { allergie: 'garlic' },
+  { allergie: 'onion' },
+  { allergie: 'citrus fruits' },
+];
 
 const StepTwo: React.FC<StepTwoProps> = ({ title }) => {
   return (
@@ -17,20 +43,11 @@ const StepTwo: React.FC<StepTwoProps> = ({ title }) => {
             onSelect={() => {}}
             onHandleAllInputs={() => {}}
           />
-          {/* TODO: CUSTOM CHECKBOX */}
-          <fieldset>
-            <legend>Do you have alergies?</legend>
 
-            <div>
-              <input type='checkbox' id='gluten' name='gluten' />
-              <label htmlFor='gluten'>Gluten</label>
-            </div>
-
-            <div>
-              <input type='checkbox' id='lactose' name='lactose' />
-              <label htmlFor='lactose'>Lactose</label>
-            </div>
-          </fieldset>
+          <CustomCheckbox
+            legend='Do you have alergies?'
+            foodAllergies={foodAllergies}
+          />
         </div>
       </div>
     </section>
