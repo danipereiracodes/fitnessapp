@@ -129,7 +129,10 @@ const StepOne: React.FC<StepOneProps> = ({
 
   //TODO DELETE
   const fillAll = () => {
-    onIsAllInputFilled(true);
+    setSelectedValue('Male');
+    setInputValueAge(37);
+    setInputValueHeight(182);
+    setInputValueWeight(75);
   };
 
   /* const handleClick = () => {}; */

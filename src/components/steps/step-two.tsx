@@ -68,7 +68,7 @@ const StepTwo: React.FC<StepTwoProps> = ({ title, onIsAllInputFilled }) => {
             </div>
           </div>
           <div className='flex flex-col items-center w-1/3 border-l border-black'>
-            <h2 className='font-roboto text-2xl '>Your Information: </h2>
+            <h2 className='font-roboto text-2xl '>Your Information so far: </h2>
             {userData && (
               <ul>
                 <li>Age: {userData && userData.age}</li>
@@ -77,7 +77,12 @@ const StepTwo: React.FC<StepTwoProps> = ({ title, onIsAllInputFilled }) => {
                 <li>Weight: {userData && userData.weight}</li>
               </ul>
             )}
-            <button onClick={() => onIsAllInputFilled(false)}>edit</button>
+            <button
+              className='underline font-bold text-[red]'
+              onClick={() => onIsAllInputFilled(false)}
+            >
+              edit
+            </button>
           </div>
         </div>
       </div>
