@@ -16,7 +16,12 @@ const Modal: React.FC<ModalProps> = ({ showModal }) => {
     if (isLoading) {
       return <div className='loader'></div>;
     }
-    return <StepTwo title='Now tell us about your alergies or special diet' />;
+    return (
+      <StepTwo
+        title='Now tell us about your alergies or special diet'
+        onIsAllInputFilled={setIsAllInputStepOneFilled}
+      />
+    );
   }
   return (
     <StepOne

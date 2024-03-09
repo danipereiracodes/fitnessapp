@@ -1,9 +1,10 @@
 import React from 'react';
 
 interface CustomSelectProps {
+  value: string;
   label: string;
   options: string[];
-  onSelect: (selectedOption: string | null) => void;
+  onSelect: (selectedOption: string) => void;
   onHandleAllInputs: () => void;
 }
 
@@ -12,6 +13,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onSelect,
   label,
   onHandleAllInputs,
+  value,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onSelect(e.target.value);
@@ -22,7 +24,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className='relative inline-block'>
       <label className='block text-gray-700 mb-1'>{label}</label>
       <div className='bg-white border border-gray-300 rounded-md py-2 px-4 w-32 cursor-pointer'>
-        <select name='gender' id='gender-select' onChange={handleChange}>
+        <select
+          value={value}
+          name='gender'
+          id='gender-select'
+          onChange={handleChange}
+        >
           <option>Select</option>
           {options.map((option, index) => (
             <option

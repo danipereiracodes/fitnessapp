@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomNumberInput from '../custom-input/custom-imput';
 import CustomSelect from '../custom-select/custom-select-component';
 
@@ -19,10 +19,22 @@ const StepOne: React.FC<StepOneProps> = ({
 }) => {
   const [noGender, setNoGender] = useState(false);
 
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string>('');
   const [inputValueAge, setInputValueAge] = useState<number | null>(0);
   const [inputValueHeight, setInputValueHeight] = useState<number | null>(0);
   const [inputValueWeight, setInputValueWeight] = useState<number | null>(0);
+
+  const firstStepData = localStorage.getItem('first-step-data');
+  const parsedFirstStepData = firstStepData ? JSON.parse(firstStepData) : null;
+
+  useEffect(() => {
+    if (parsedFirstStepData !== null && parsedFirstStepData !== '') {
+      setSelectedValue(parsedFirstStepData.gender);
+      setInputValueAge(parsedFirstStepData.age);
+      setInputValueHeight(parsedFirstStepData.height);
+      setInputValueWeight(parsedFirstStepData.weight);
+    }
+  }, []);
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(e.target.value);
@@ -57,7 +69,7 @@ const StepOne: React.FC<StepOneProps> = ({
     }
   };
 
-  const handleSelect = (selectedOption: string | null) => {
+  const handleSelect = (selectedOption: string) => {
     setSelectedValue(selectedOption);
     if (selectedOption !== 'none') {
       return setNoGender(false);
@@ -147,6 +159,7 @@ const StepOne: React.FC<StepOneProps> = ({
               options={['Female', 'Male', 'Non-binary', 'none']}
               onSelect={handleSelect}
               onHandleAllInputs={handleAllInputs}
+              value={selectedValue}
             />
             <span className='text-[#f95959]'>
               {noGender &&
