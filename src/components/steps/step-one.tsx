@@ -20,47 +20,40 @@ const StepOne: React.FC<StepOneProps> = ({
   const [noGender, setNoGender] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
-  const [inputValueAge, setInputValueAge] = useState<number | string | null>(0);
-  const [inputValueHeight, setInputValueHeight] = useState<
-    number | string | null
-  >(0);
-  const [inputValueWeight, setInputValueWeight] = useState<
-    number | string | null
-  >(0);
+  const [inputValueAge, setInputValueAge] = useState<number | null>(0);
+  const [inputValueHeight, setInputValueHeight] = useState<number | null>(0);
+  const [inputValueWeight, setInputValueWeight] = useState<number | null>(0);
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
+    const newValue = parseFloat(e.target.value);
     setInputValueAge(newValue);
 
-    if (newValue === '') {
+    if (newValue === 0) {
       setInputValueAge(null);
     } else {
-      const parsedValue = parseFloat(newValue);
-      setInputValueAge(isNaN(parsedValue) ? null : parsedValue);
+      setInputValueAge(newValue);
     }
   };
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
+    const newValue = parseFloat(e.target.value);
     setInputValueWeight(newValue);
 
-    if (newValue === '') {
+    if (newValue === 0) {
       setInputValueWeight(null);
     } else {
-      const parsedValue = parseFloat(newValue);
-      setInputValueWeight(isNaN(parsedValue) ? null : parsedValue);
+      setInputValueWeight(newValue);
     }
   };
 
   const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
+    const newValue = parseFloat(e.target.value);
     setInputValueHeight(newValue);
 
-    if (newValue === '') {
+    if (newValue === 0) {
       setInputValueHeight(null);
     } else {
-      const parsedValue = parseFloat(newValue);
-      setInputValueHeight(isNaN(parsedValue) ? null : parsedValue);
+      setInputValueHeight(newValue);
     }
   };
 
@@ -99,6 +92,16 @@ const StepOne: React.FC<StepOneProps> = ({
     }
   };
 
+  const saveDataToLocalStorage = () => {
+    const data = {
+      age: inputValueAge,
+      height: inputValueHeight,
+      weight: inputValueWeight,
+      gender: selectedValue,
+    };
+    localStorage.setItem('first-step-data', JSON.stringify(data));
+  };
+
   const handleAllInputs = () => {
     handleLastInputBlur(
       selectedValue,
@@ -108,6 +111,8 @@ const StepOne: React.FC<StepOneProps> = ({
       onLoading,
       onIsAllInputFilled
     );
+
+    saveDataToLocalStorage();
   };
 
   //TODO DELETE
@@ -129,6 +134,9 @@ const StepOne: React.FC<StepOneProps> = ({
           </div>
           <div className='flex flex-col gap-4'>
             <CustomNumberInput
+              type='number'
+              min={14}
+              max={110}
               label="What's your age?"
               value={inputValueAge}
               onChange={handleAgeChange}
@@ -146,12 +154,14 @@ const StepOne: React.FC<StepOneProps> = ({
             </span>
 
             <CustomNumberInput
+              type='number'
               label='What is your weight in kg?'
               value={inputValueWeight}
               onChange={handleWeightChange}
               onHandleAllInputs={handleAllInputs}
             />
             <CustomNumberInput
+              type='number'
               label='What is your height in cm?'
               value={inputValueHeight}
               onChange={handleHeightChange}
