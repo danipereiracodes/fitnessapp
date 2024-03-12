@@ -3,6 +3,8 @@ import CustomSelect from '../custom-select/custom-select-component';
 import CustomCheckbox from '../custom-checkbox/custom-checkbox';
 
 interface StepTwoProps {
+  step: number;
+  onSetStep: () => void;
   title: string;
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -32,7 +34,12 @@ const foodAllergies = [
   { allergie: 'citrus fruits' },
 ];
 
-const StepTwo: React.FC<StepTwoProps> = ({ title, onIsAllInputFilled }) => {
+const StepTwo: React.FC<StepTwoProps> = ({
+  title,
+  onIsAllInputFilled,
+  step,
+}) => {
+  console.log('step 2', step);
   const [userData, setUserData] = useState<{
     age: number;
     height: number;
@@ -47,8 +54,9 @@ const StepTwo: React.FC<StepTwoProps> = ({ title, onIsAllInputFilled }) => {
     }
   }, []);
   return (
-    <section className='flex flex-col justify-center items-center p-4 absolute inset-0 z-20 bg-[#e3e3e3] w-[75%] h-[75vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-      <div className='flex w-full h-full justify-center'>
+    <section className="relative flex flex-col w-full h-full justify-center items-center p-4  bg-[url('/image/fitness_food_background.avif')] bg-center">
+      <div className='absolute w-full h-full inset-0 bg-[rgba(0,0,0,0.41)]'></div>
+      <div className='flex justify-center z-10'>
         <div className='flex gap-4'>
           <div className='flex flex-col w-2/3'>
             <h2 className='font-roboto text-2xl '>{title}</h2>

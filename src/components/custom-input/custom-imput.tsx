@@ -35,13 +35,13 @@ const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
 
   return (
     <div className='relative inline-block'>
-      <label className='block text-gray-700 mb-1'>{label}</label>
+      <label className='block text-white mb-1'>{label}</label>
       <div className='bg-white border border-gray-300 rounded-md py-2 px-4 w-32 cursor-pointer'>
         <input
           type={type}
           min={min}
           max={max}
-          className='w-full text-right'
+          className='w-full text-right text-black'
           value={value ?? 0}
           onChange={onChange}
           placeholder='0'

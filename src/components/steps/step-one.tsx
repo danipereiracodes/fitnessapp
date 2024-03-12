@@ -5,7 +5,8 @@ import CustomSelect from '../custom-select/custom-select-component';
 interface StepOneProps {
   isLoading: boolean;
   title: string;
-
+  step: number;
+  onSetStep: () => void;
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
   onLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -13,10 +14,12 @@ interface StepOneProps {
 const StepOne: React.FC<StepOneProps> = ({
   isLoading,
   title,
-
+  step,
+  onSetStep,
   onIsAllInputFilled,
   onLoading,
 }) => {
+  console.log('step', step);
   const [noGender, setNoGender] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState<string>('');
@@ -98,6 +101,7 @@ const StepOne: React.FC<StepOneProps> = ({
       setTimeout(() => {
         loading(false);
         allFilled(true);
+        onSetStep();
       }, 2000);
     } else {
       allFilled(false);
@@ -138,55 +142,56 @@ const StepOne: React.FC<StepOneProps> = ({
   /* const handleClick = () => {}; */
 
   return (
-    <section className='flex flex-col justify-evenly items-center p-4 absolute inset-0 z-20 bg-[#e3e3e3] w-[75%] h-[75vh] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-      {isLoading ? (
-        <div className='loader'></div>
-      ) : (
-        <>
-          {' '}
-          <div className='absolute top-0 pt-8'>
+    <section className=" relative flex flex-col justify-evenly items-center p-4  w-full h-full  bg-[url('/image/fitness_info_background.avif')] bg-center bg-cover">
+      <div className='absolute w-full h-full inset-0 bg-[rgba(0,0,0,0.41)]'></div>
+      <div className='flex flex-col justify-center items-center z-10'>
+        {isLoading ? (
+          <div className='loader'></div>
+        ) : (
+          <>
+            {' '}
             <h2 className='font-roboto text-2xl '>{title}</h2>
-          </div>
-          <div className='flex flex-col gap-4'>
-            <CustomNumberInput
-              type='number'
-              min={14}
-              max={110}
-              label="What's your age?"
-              value={inputValueAge}
-              onChange={handleAgeChange}
-              onHandleAllInputs={handleAllInputs}
-            />
-            <CustomSelect
-              label={'Select your gender'}
-              options={['Female', 'Male', 'Non-binary', 'none']}
-              onSelect={handleSelect}
-              onHandleAllInputs={handleAllInputs}
-              value={selectedValue}
-            />
-            <span className='text-[#f95959]'>
-              {noGender &&
-                '* With this option the information could not be 100% accurate'}
-            </span>
+            <div className='flex flex-col gap-4'>
+              <CustomNumberInput
+                type='number'
+                min={14}
+                max={110}
+                label="What's your age?"
+                value={inputValueAge}
+                onChange={handleAgeChange}
+                onHandleAllInputs={handleAllInputs}
+              />
+              <CustomSelect
+                label={'Select your gender'}
+                options={['Female', 'Male', 'Non-binary', 'none']}
+                onSelect={handleSelect}
+                onHandleAllInputs={handleAllInputs}
+                value={selectedValue}
+              />
+              <span className='text-[#f95959]'>
+                {noGender &&
+                  '* With this option the information could not be 100% accurate'}
+              </span>
 
-            <CustomNumberInput
-              type='number'
-              label='What is your weight in kg?'
-              value={inputValueWeight}
-              onChange={handleWeightChange}
-              onHandleAllInputs={handleAllInputs}
-            />
-            <CustomNumberInput
-              type='number'
-              label='What is your height in cm?'
-              value={inputValueHeight}
-              onChange={handleHeightChange}
-              onHandleAllInputs={handleAllInputs}
-            />
-          </div>
-          <button onClick={fillAll}>FILL ALL</button>
-        </>
-      )}
+              <CustomNumberInput
+                type='number'
+                label='What is your weight in kg?'
+                value={inputValueWeight}
+                onChange={handleWeightChange}
+                onHandleAllInputs={handleAllInputs}
+              />
+              <CustomNumberInput
+                type='number'
+                label='What is your height in cm?'
+                value={inputValueHeight}
+                onChange={handleHeightChange}
+                onHandleAllInputs={handleAllInputs}
+              />
+            </div>
+            <button onClick={fillAll}>FILL ALL</button>
+          </>
+        )}
+      </div>
     </section>
   );
 };
