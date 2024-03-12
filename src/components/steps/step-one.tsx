@@ -149,7 +149,7 @@ const StepOne: React.FC<StepOneProps> = ({
           <div className='loader'></div>
         ) : (
           <>
-            {' '}
+            <h1>Step {step}</h1>
             <h2 className='font-roboto text-2xl '>{title}</h2>
             <div className='flex flex-col gap-4'>
               <CustomNumberInput

@@ -9,7 +9,11 @@ interface StepTwoProps {
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const StepTwo: React.FC<StepTwoProps> = ({ title, onIsAllInputFilled }) => {
+const StepTwo: React.FC<StepTwoProps> = ({
+  title,
+  onIsAllInputFilled,
+  step,
+}) => {
   const [textInput, setTextInput] = useState<string>('');
   const [isFasten, setIsFasten] = useState<boolean>(false);
   const [allergies, setAllergies] = useState<string[]>([]);
@@ -64,7 +68,8 @@ const StepTwo: React.FC<StepTwoProps> = ({ title, onIsAllInputFilled }) => {
   return (
     <section className="relative flex flex-col w-full h-full justify-center items-center p-4  bg-[url('/image/fitness_food_background.avif')] bg-center">
       <div className='absolute w-full h-full inset-0 bg-[rgba(0,0,0,0.41)]'></div>
-      <div className='flex justify-center z-10'>
+      <div className='flex flex-col justify-center z-10'>
+        <h1>Step {step}</h1>
         <div className='flex gap-4'>
           <div className='flex flex-col w-2/3'>
             <h2 className='font-roboto text-2xl '>{title}</h2>
