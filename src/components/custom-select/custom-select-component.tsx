@@ -5,19 +5,16 @@ interface CustomSelectProps {
   label: string;
   options: string[];
   onSelect: (selectedOption: string) => void;
-  onHandleAllInputs: () => void;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   onSelect,
   label,
-  onHandleAllInputs,
   value,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onSelect(e.target.value);
-    onHandleAllInputs();
   };
 
   return (
@@ -26,8 +23,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       <div className='bg-white border border-gray-300 rounded-md py-2 px-4 w-32 cursor-pointer'>
         <select
           value={value}
-          name='gender'
-          id='gender-select'
+          name={value}
+          id={value}
           onChange={handleChange}
           className='text-black'
         >

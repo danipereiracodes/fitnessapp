@@ -5,13 +5,18 @@ const HomePage: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [step, setStep] = useState(0);
 
-  const onSetStep = () => {
-    setStep((prevStep) => prevStep + 1);
+  const onSetStep = (action: string | null) => {
+    if (action === 'sum') {
+      setStep((prevStep) => prevStep + 1);
+    } else if (action === 'sub') {
+      setStep((prevStep) => prevStep - 1);
+    } else {
+      setStep((prevStep) => prevStep);
+    }
   };
 
   const handleShowModal = (): void => {
     setShowModal(true);
-    onSetStep();
   };
 
   return (

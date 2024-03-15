@@ -1,42 +1,89 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
+import FastingCheckbox from '../custom-checkbox/fasting-checkbox';
 import CustomSelect from '../custom-select/custom-select-component';
-import CustomCheckbox from '../custom-checkbox/custom-checkbox';
+import { checkAllStepTwoFieldsFilled } from '../../helpers/all-fields-validation';
 
 interface StepTwoProps {
   step: number;
-  onSetStep: () => void;
+  onSetStep: (action: string | null) => void;
   title: string;
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
+  onLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
 }
+
+const fastingOptions = [
+  {
+    id: 0,
+    title: 'yes',
+    checked: false,
+  },
+  {
+    id: 1,
+    title: 'no',
+    checked: false,
+  },
+  {
+    id: 2,
+    title: 'dunno',
+    checked: false,
+  },
+];
 
 const StepTwo: React.FC<StepTwoProps> = ({
   title,
+  onLoading,
+  isLoading,
   onIsAllInputFilled,
   step,
+  onSetStep,
 }) => {
   const [textInput, setTextInput] = useState<string>('');
-  const [isFasten, setIsFasten] = useState<boolean>(false);
+  const [selectFastingFreq, setSelectFastingFreq] = useState<string | null>('');
+  const [selectDiet, setSelectDiet] = useState<string>('');
+  const [isFasting, setIsFasting] = useState<boolean>(false);
   const [allergies, setAllergies] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  //TODO: MAKE MODEL
   const [userData, setUserData] = useState<{
     age: number;
     height: number;
     weight: number;
     gender: string | null;
   }>();
-  useEffect(() => {
+
+  const [newData, setNewData] = useState<{
+    diet: string;
+    fasting: boolean | null;
+    fastingFreq: string;
+    allergies: string[];
+  } | null>(null);
+  /*   useEffect(() => {
     const prevData = localStorage.getItem('first-step-data');
 
     if (prevData !== '' || prevData) {
       setUserData(JSON.parse(prevData ?? ''));
     }
-  }, []);
+  }, []); */
 
   let splittedText: string[];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextInput(e.target.value);
     splittedText = textInput.split(',');
     console.log(splittedText);
+  };
+
+  const handleSelectFastingFreqChange = (selectedOption: string | null) => {
+    setSelectFastingFreq(selectedOption);
+    console.log(selectedOption);
+  };
+
+  const handleSelectDietChange = (selectedOption: string) => {
+    setSelectDiet(selectedOption);
+    console.log(selectedOption);
   };
 
   const handleBlur = () => {
@@ -47,22 +94,34 @@ const StepTwo: React.FC<StepTwoProps> = ({
     console.log(allergies);
   };
 
-  const onHandleFasten = () => {
-    setIsFasten(!isFasten);
+  const addNewData = () => {
+    setNewData((prevData) => ({
+      ...prevData,
+      diet: selectDiet,
+      fasting: isFasting,
+      fastingFreq: selectFastingFreq || '',
+      allergies: allergies,
+    }));
   };
 
-  const fastingDialogueOpen = () => {
-    return (
-      <div>
-        <CustomSelect
-          label={'How often do you do it?'}
-          options={['12 hours', '14 hours', '16hours']}
-          onSelect={() => {}}
-          onHandleAllInputs={() => {}}
-          value=''
-        />
-      </div>
+  const renderErrorMessage = (message: string | null) => {
+    setErrorMessage(message);
+  };
+
+  const handleSubmitData = () => {
+    checkAllStepTwoFieldsFilled(
+      textInput,
+      selectDiet,
+      isFasting,
+      allergies,
+      onLoading,
+      onIsAllInputFilled,
+      renderErrorMessage,
+
+      onSetStep
     );
+
+    addNewData();
   };
 
   return (
@@ -77,9 +136,8 @@ const StepTwo: React.FC<StepTwoProps> = ({
               <CustomSelect
                 label={'What is your diet?'}
                 options={['Vegan', 'Vegeterian', 'Pescatarian', 'Meat Lover']}
-                onSelect={() => {}}
-                onHandleAllInputs={() => {}}
-                value=''
+                onSelect={handleSelectDietChange}
+                value={selectDiet || ''}
               />
 
               <label htmlFor='alergies'>
@@ -91,21 +149,31 @@ const StepTwo: React.FC<StepTwoProps> = ({
                 type='text'
                 name='alergies'
                 value={textInput}
-                onChange={handleChange}
+                onChange={handleTextInputChange}
                 onBlur={handleBlur}
               />
               {allergies?.map((item) => {
                 return <h3>{item}</h3>;
               })}
-              <CustomCheckbox
+              <FastingCheckbox
                 legend='Do you practice intermittent fasting?'
-                options={['yes', 'no', 'dunno']}
-                onFasten={onHandleFasten}
+                options={fastingOptions}
+                onSetIsFasting={setIsFasting}
+                onHandleSelect={handleSelectFastingFreqChange}
               />
-              {isFasten && fastingDialogueOpen()}
+              {isFasting && (
+                <CustomSelect
+                  label={'How often do you do it?'}
+                  options={['12h', '14h', '16h']}
+                  onSelect={handleSelectFastingFreqChange}
+                  value={selectFastingFreq || ''}
+                />
+              )}
             </div>
+            <button onClick={handleSubmitData}> Next Step</button>
+            {errorMessage}
           </div>
-          <div className='flex flex-col items-center w-1/3 border-l border-black'>
+          {/* <div className='flex flex-col items-center w-1/3 border-l border-black'>
             <h2 className='font-roboto text-2xl '>Your Information so far: </h2>
             {userData && (
               <ul>
@@ -121,7 +189,7 @@ const StepTwo: React.FC<StepTwoProps> = ({
             >
               edit
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

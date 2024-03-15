@@ -5,7 +5,7 @@ import StepTwo from '../steps/step-two';
 interface ModalProps {
   showModal: boolean;
   step: number;
-  onSetStep: () => void;
+  onSetStep: (action: string | null) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({ showModal, step, onSetStep }) => {
@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ showModal, step, onSetStep }) => {
   if (!showModal) return;
   if (isAllInputStepOneFilled) {
     if (isLoading) {
-      onSetStep();
+      onSetStep('sum');
       return <div className='loader'></div>;
     }
     return (
@@ -25,6 +25,8 @@ const Modal: React.FC<ModalProps> = ({ showModal, step, onSetStep }) => {
         onSetStep={onSetStep}
         title='Now tell us about your alergies or special diet'
         onIsAllInputFilled={setIsAllInputStepOneFilled}
+        onLoading={setisLoading}
+        isLoading={isLoading}
       />
     );
   }
