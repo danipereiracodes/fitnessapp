@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import CustomNumberInput from '../custom-input/custom-imput';
 import CustomSelect from '../custom-select/custom-select-component';
 import { checkAllStepOneFieldsFilled } from '../../helpers/all-fields-validation';
+import { useNavigate } from 'react-router-dom';
 
 interface StepOneProps {
   isLoading: boolean;
   title: string;
-  step: number;
-  onSetStep: (action: string | null) => void;
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
   onLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -15,13 +14,10 @@ interface StepOneProps {
 const StepOne: React.FC<StepOneProps> = ({
   isLoading,
   title,
-  step,
-  onSetStep,
+
   onIsAllInputFilled,
   onLoading,
 }) => {
-  console.log('step', step);
-
   const [selectGender, setSelectGender] = useState<string>('');
   const [inputValueAge, setInputValueAge] = useState<number | null>(0);
   const [inputValueHeight, setInputValueHeight] = useState<number | null>(0);
@@ -30,6 +26,8 @@ const StepOne: React.FC<StepOneProps> = ({
 
   const firstStepData = localStorage.getItem('first-step-data');
   const parsedFirstStepData = firstStepData ? JSON.parse(firstStepData) : null;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (parsedFirstStepData !== null && parsedFirstStepData !== '') {
@@ -78,6 +76,10 @@ const StepOne: React.FC<StepOneProps> = ({
     console.log(selectedOption);
   };
 
+  const handleNavigatePrevious = () => {
+    navigate('/');
+  };
+
   const saveDataToLocalStorage = () => {
     const data = {
       age: inputValueAge,
@@ -93,29 +95,29 @@ const StepOne: React.FC<StepOneProps> = ({
   };
 
   const handleSubmitData = () => {
-    const isStepOneFieldsFilled = checkAllStepOneFieldsFilled(
+    checkAllStepOneFieldsFilled(
       selectGender,
       inputValueAge,
       inputValueHeight,
       inputValueWeight,
       onLoading,
       onIsAllInputFilled,
-      renderErrorMessage
+      renderErrorMessage,
+
+      navigate
     );
 
-    onSetStep(isStepOneFieldsFilled);
     saveDataToLocalStorage();
   };
 
   return (
-    <section className=" relative flex flex-col justify-evenly items-center p-4  w-full h-full  bg-[url('/image/fitness_info_background.avif')] bg-center bg-cover">
+    <section className=" text-white relative flex flex-col justify-evenly items-center p-4  w-full h-full  bg-[url('/image/fitness_info_background.avif')] bg-center bg-cover">
       <div className='absolute w-full h-full inset-0 bg-[rgba(0,0,0,0.41)]'></div>
       <div className='flex flex-col justify-center items-center z-10'>
         {isLoading ? (
           <div className='loader'></div>
         ) : (
           <>
-            <h1>Step {step}</h1>
             <h2 className='font-roboto text-2xl '>{title}</h2>
             <div className='flex flex-col gap-4'>
               <CustomNumberInput
@@ -146,7 +148,10 @@ const StepOne: React.FC<StepOneProps> = ({
                 onChange={handleHeightChange}
               />
             </div>
-            <button onClick={handleSubmitData}>Next Step</button>
+            <div className='button-container text-white flex gap-4'>
+              <button onClick={handleSubmitData}>Next</button>
+              <button onClick={handleNavigatePrevious}>Back</button>
+            </div>
             {errorMessage}
           </>
         )}

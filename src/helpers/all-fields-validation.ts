@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-const SUM = 'sum';
-const SUB = 'sub';
+
+import { NavigateFunction } from 'react-router-dom';
 
 export const checkAllStepOneFieldsFilled = (
   selectGender: string | null,
@@ -9,7 +9,9 @@ export const checkAllStepOneFieldsFilled = (
   inputHeight: number | string | null,
   loading: (arg0: boolean) => void,
   allFilled: (arg0: boolean) => void,
-  onError: (message: string | null) => void
+  onError: (message: string | null) => void,
+
+  navigate: NavigateFunction
 ) => {
   if (
     selectGender !== '' &&
@@ -25,8 +27,8 @@ export const checkAllStepOneFieldsFilled = (
     setTimeout(() => {
       loading(false);
       allFilled(true);
-    }, 2000);
-    return SUM;
+      navigate('/step-2');
+    }, 1000);
   } else {
     allFilled(false);
 
@@ -35,36 +37,35 @@ export const checkAllStepOneFieldsFilled = (
     setTimeout(() => {
       onError(null);
     }, 4000);
-    return null;
   }
 };
 
 export const checkAllStepTwoFieldsFilled = (
   textInput: string,
   selectDiet: string,
-  isFasting: boolean,
+  isFasting: boolean | null,
   allergies: string[],
   loading: (arg0: boolean) => void,
   allFilled: (arg0: boolean) => void,
   onError: (message: string | null) => void,
-
-  onStep: (action: string | null) => void
+  navigate: NavigateFunction
 ) => {
   if (
     textInput !== '' &&
     selectDiet !== '' &&
-    isFasting &&
+    isFasting !== null &&
     allergies.length > 0
   ) {
     loading(true);
     setTimeout(() => {
       loading(false);
-      onStep(SUM);
+
       allFilled(true);
+      navigate('/step-3');
     }, 2000);
   } else {
     allFilled(false);
-    onStep(null);
+
     onError('You need to fill all form fields before moving forward');
     setTimeout(() => {
       onError(null);

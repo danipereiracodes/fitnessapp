@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import FastingCheckbox from '../custom-checkbox/fasting-checkbox';
 import CustomSelect from '../custom-select/custom-select-component';
 import { checkAllStepTwoFieldsFilled } from '../../helpers/all-fields-validation';
+import { useNavigate } from 'react-router-dom';
 
 interface StepTwoProps {
-  step: number;
-  onSetStep: (action: string | null) => void;
   title: string;
   onIsAllInputFilled: React.Dispatch<React.SetStateAction<boolean>>;
   onLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,15 +35,15 @@ const StepTwo: React.FC<StepTwoProps> = ({
   onLoading,
   isLoading,
   onIsAllInputFilled,
-  step,
-  onSetStep,
 }) => {
   const [textInput, setTextInput] = useState<string>('');
   const [selectFastingFreq, setSelectFastingFreq] = useState<string | null>('');
   const [selectDiet, setSelectDiet] = useState<string>('');
-  const [isFasting, setIsFasting] = useState<boolean>(false);
+  const [isFasting, setIsFasting] = useState<boolean | null>(null);
   const [allergies, setAllergies] = useState<string[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   //TODO: MAKE MODEL
   const [userData, setUserData] = useState<{
@@ -94,6 +93,10 @@ const StepTwo: React.FC<StepTwoProps> = ({
     console.log(allergies);
   };
 
+  const handleNavigatePrevious = () => {
+    navigate('/step-1');
+  };
+
   const addNewData = () => {
     setNewData((prevData) => ({
       ...prevData,
@@ -117,19 +120,17 @@ const StepTwo: React.FC<StepTwoProps> = ({
       onLoading,
       onIsAllInputFilled,
       renderErrorMessage,
-
-      onSetStep
+      navigate
     );
 
     addNewData();
   };
 
   return (
-    <section className="relative flex flex-col w-full h-full justify-center items-center p-4  bg-[url('/image/fitness_food_background.avif')] bg-center">
+    <section className="relative text-white flex flex-col w-full h-full justify-center items-center p-4  bg-[url('/image/fitness_food_background.avif')] bg-center">
       <div className='absolute w-full h-full inset-0 bg-[rgba(0,0,0,0.41)]'></div>
       <div className='flex flex-col justify-center z-10'>
-        <h1>Step {step}</h1>
-        <div className='flex gap-4'>
+        <div className='flex gap-4 justify-center'>
           <div className='flex flex-col w-2/3'>
             <h2 className='font-roboto text-2xl '>{title}</h2>
             <div className='flex flex-col gap-4'>
@@ -170,7 +171,10 @@ const StepTwo: React.FC<StepTwoProps> = ({
                 />
               )}
             </div>
-            <button onClick={handleSubmitData}> Next Step</button>
+            <div className='button-container text-white flex gap-4'>
+              <button onClick={handleSubmitData}>Next</button>
+              <button onClick={handleNavigatePrevious}>Back</button>
+            </div>
             {errorMessage}
           </div>
           {/* <div className='flex flex-col items-center w-1/3 border-l border-black'>

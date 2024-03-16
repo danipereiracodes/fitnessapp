@@ -3,7 +3,7 @@ import { useState } from 'react';
 interface FastingCheckboxProps {
   legend: string;
   options?: { id: number; title: string; checked: boolean }[];
-  onSetIsFasting: React.Dispatch<React.SetStateAction<boolean>>;
+  onSetIsFasting: React.Dispatch<React.SetStateAction<boolean | null>>;
   onHandleSelect: (selectedOption: string | null) => void;
 }
 
