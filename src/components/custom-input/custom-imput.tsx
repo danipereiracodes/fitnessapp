@@ -1,6 +1,7 @@
 import React from 'react';
 
 interface CustomNumberInputProps {
+  name: string;
   type: string;
   min?: number;
   max?: number;
@@ -16,12 +17,14 @@ const CustomNumberInput: React.FC<CustomNumberInputProps> = ({
   label,
   value,
   onChange,
+  name,
 }) => {
   return (
     <div className='relative inline-block'>
       <label className='block text-white mb-1'>{label}</label>
       <div className='bg-white border border-gray-300 rounded-md py-2 px-4 w-32 cursor-pointer'>
         <input
+          name={name}
           type={type}
           min={min}
           max={max}
