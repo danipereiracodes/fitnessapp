@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FastingCheckbox from '../custom-checkbox/fasting-checkbox';
 import CustomSelect from '../custom-select/custom-select-component';
 import { checkAllStepTwoFieldsFilled } from '../../helpers/all-fields-validation';
@@ -130,54 +130,57 @@ const StepTwo: React.FC<StepTwoProps> = ({
     <section className="relative text-white flex flex-col w-full h-full justify-center items-center p-4  bg-[url('/image/fitness_food_background.avif')] bg-center">
       <div className='absolute w-full h-full inset-0 bg-[rgba(0,0,0,0.41)]'></div>
       <div className='flex flex-col justify-center z-10'>
-        <div className='flex gap-4 justify-center'>
-          <div className='flex flex-col w-2/3'>
-            <h2 className='font-roboto text-2xl '>{title}</h2>
-            <div className='flex flex-col gap-4'>
-              <CustomSelect
-                label={'What is your diet?'}
-                options={['Vegan', 'Vegeterian', 'Pescatarian', 'Meat Lover']}
-                onSelect={handleSelectDietChange}
-                value={selectDiet || ''}
-              />
-
-              <label htmlFor='alergies'>
-                Any alergies? (add them separated by comas, dots or spaces.
-                Example: "gluten,lactose etc..")
-              </label>
-              <input
-                className='text-black'
-                type='text'
-                name='alergies'
-                value={textInput}
-                onChange={handleTextInputChange}
-                onBlur={handleBlur}
-              />
-              {allergies?.map((item) => {
-                return <h3>{item}</h3>;
-              })}
-              <FastingCheckbox
-                legend='Do you practice intermittent fasting?'
-                options={fastingOptions}
-                onSetIsFasting={setIsFasting}
-                onHandleSelect={handleSelectFastingFreqChange}
-              />
-              {isFasting && (
+        {isLoading ? (
+          <div className='loader'></div>
+        ) : (
+          <div className='flex gap-4 justify-center'>
+            <div className='flex flex-col w-2/3'>
+              <h2 className='font-roboto text-2xl '>{title}</h2>
+              <div className='flex flex-col gap-4'>
                 <CustomSelect
-                  label={'How often do you do it?'}
-                  options={['12h', '14h', '16h']}
-                  onSelect={handleSelectFastingFreqChange}
-                  value={selectFastingFreq || ''}
+                  label={'What is your diet?'}
+                  options={['Vegan', 'Vegeterian', 'Pescatarian', 'Meat Lover']}
+                  onSelect={handleSelectDietChange}
+                  value={selectDiet || ''}
                 />
-              )}
+
+                <label htmlFor='alergies'>
+                  Any alergies? (add them separated by comas, dots or spaces.
+                  Example: "gluten,lactose etc..")
+                </label>
+                <input
+                  className='text-black'
+                  type='text'
+                  name='alergies'
+                  value={textInput}
+                  onChange={handleTextInputChange}
+                  onBlur={handleBlur}
+                />
+                {allergies?.map((item) => {
+                  return <h3>{item}</h3>;
+                })}
+                <FastingCheckbox
+                  legend='Do you practice intermittent fasting?'
+                  options={fastingOptions}
+                  onSetIsFasting={setIsFasting}
+                  onHandleSelect={handleSelectFastingFreqChange}
+                />
+                {isFasting && (
+                  <CustomSelect
+                    label={'How often do you do it?'}
+                    options={['12h', '14h', '16h']}
+                    onSelect={handleSelectFastingFreqChange}
+                    value={selectFastingFreq || ''}
+                  />
+                )}
+              </div>
+              <div className='button-container text-white flex gap-4'>
+                <button onClick={handleSubmitData}>Next</button>
+                <button onClick={handleNavigatePrevious}>Back</button>
+              </div>
+              {errorMessage}
             </div>
-            <div className='button-container text-white flex gap-4'>
-              <button onClick={handleSubmitData}>Next</button>
-              <button onClick={handleNavigatePrevious}>Back</button>
-            </div>
-            {errorMessage}
-          </div>
-          {/* <div className='flex flex-col items-center w-1/3 border-l border-black'>
+            {/* <div className='flex flex-col items-center w-1/3 border-l border-black'>
             <h2 className='font-roboto text-2xl '>Your Information so far: </h2>
             {userData && (
               <ul>
@@ -194,7 +197,8 @@ const StepTwo: React.FC<StepTwoProps> = ({
               edit
             </button>
           </div> */}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

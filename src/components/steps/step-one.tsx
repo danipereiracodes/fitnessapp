@@ -16,9 +16,10 @@ const StepOne: React.FC<StepOneProps> = ({
   title,
 
   //onIsAllInputFilled,
-  //onLoading,
+  onLoading,
 }) => {
-  const { data, handleInputChange, handleSelectChange } = useStepOne();
+  const { data, handleInputChange, handleSelectChange, handleClick } =
+    useStepOne(onLoading);
 
   return (
     <section className=" text-white relative flex flex-col justify-evenly items-center p-4  w-full h-full  bg-[url('/image/fitness_info_background.avif')] bg-center bg-cover">
@@ -62,7 +63,7 @@ const StepOne: React.FC<StepOneProps> = ({
               />
             </div>
             <div className='button-container text-white flex gap-4'>
-              <button>Next</button>
+              <button onClick={handleClick}>Next</button>
               <button>Back</button>
             </div>
             {data.errorMessage}

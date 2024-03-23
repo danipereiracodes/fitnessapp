@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface stepOneData {
   selectGender: string;
@@ -10,7 +11,9 @@ interface stepOneData {
 
 const prevData = localStorage.getItem('user-data');
 
-const useStepOne = () => {
+const useStepOne = (
+  onLoading: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const [data, setData] = useState<stepOneData>(() => {
     return prevData
       ? JSON.parse(prevData)
@@ -22,6 +25,8 @@ const useStepOne = () => {
           errorMessage: null,
         };
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     saveToLocalStorage();
@@ -48,8 +53,39 @@ const useStepOne = () => {
   const saveToLocalStorage = () => {
     localStorage.setItem('user-data', JSON.stringify(data));
   };
+  //TODO: VALIDATIONS
+  const handleClick = () => {
+    if (
+      data.age === 0 ||
+      data.height === 0 ||
+      data.weight === 0 ||
+      !data.selectGender
+    ) {
+      setData((prevData) => ({
+        ...prevData,
+        errorMessage: 'You need to fill all to move forward',
+      }));
 
-  return { data, handleInputChange, handleSelectChange };
+      setTimeout(() => {
+        setData((prevData) => ({
+          ...prevData,
+          errorMessage: null,
+        }));
+      }, 3000);
+    } else {
+      setData((prevData) => ({
+        ...prevData,
+        errorMessage: null,
+      }));
+      onLoading(true);
+      setTimeout(() => {
+        navigate('/step-2');
+        onLoading(false);
+      }, 1000);
+    }
+  };
+
+  return { data, handleInputChange, handleSelectChange, handleClick };
 };
 
 export default useStepOne;
